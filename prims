@@ -1,0 +1,66 @@
+import java.io.*;
+import java.util.*;
+
+public class prims {
+
+    public static void main(String[] args) {
+    
+        
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int m=sc.nextInt();
+        int[][] A=new int[n+1][n+1];
+        for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=n;j++)
+                A[i][j]=-1;
+        }
+        for(int i=1;i<=m;i++)
+        {
+            int a=sc.nextInt();
+            int b=sc.nextInt();
+            int c=sc.nextInt();
+            A[a][b]=c;
+            A[b][a]=c;
+        }
+        int s=sc.nextInt();
+        int[][] B=new int[n+1][2];
+        for(int i=1;i<=n;i++)
+            B[i][0]=100001;
+        B[s][1]=1;
+        int c=1;
+        int min=s,min1=0;
+        int sum=0;
+        while(c>0)
+         {  c=0;
+     
+          for(int i=1;i<=n;i++)
+          {
+              if(A[min][i]!=-1&&B[i][1]==0)
+              {
+                B[i][0]=B[i][0]>A[min][i]?A[min][i]:B[i][0];           
+              
+              }
+          }
+          min1=100001;
+            for(int i=1;i<=n;i++)
+          {
+              
+              if(B[i][1]==0)
+              {c++;
+              if(B[i][0]<min1)
+              {
+                   min1=B[i][0];
+                  min=i;
+              }
+              }
+          }
+        B[min][1]=1;
+        if(c>0)
+          sum=sum+B[min][0];
+      
+        }
+        System.out.println(sum);
+    
+    }
+}
