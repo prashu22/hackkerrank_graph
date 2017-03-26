@@ -1,0 +1,101 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+
+public class moon {
+        static Map<Integer,Node> m=new HashMap<Integer,Node>();
+        
+     public static class Node
+    {
+       Node parent;
+        int data;
+        int weight;
+        
+    }
+
+    public static void makeset(int data)
+     {  
+         Node node=new Node();
+         node.parent=node;
+         node.data=data;
+         node.weight=1;
+         m.put(data, node);
+     }
+      public static void union(int d1,int d2)
+     {
+      Node n1=m.get(d1);
+      Node n2=m.get(d2);
+     
+       Node p1=find(n1);
+     
+       Node p2=find(n2);
+       
+       if(p1==p2)
+           return;
+       if(p1.weight>=p2.weight)
+       {
+       p2.parent=p1;
+       p1.weight=p1.weight+p2.weight;
+       
+       }
+       else
+       {p1.parent=p2;
+       p2.weight=p1.weight+p2.weight;
+       }
+      
+     }
+      public static Node find(Node node)
+     {  
+         Node parent=node.parent;
+         if(parent==node)
+         {  
+             return parent;
+         }
+        
+         node.parent=find(node.parent);
+         return node.parent;
+     }
+     public static long fun(int a,int b)
+     {
+         long c=((long)a)*((long)a-1)/2;
+         return c;
+     }
+    
+   public static void main(String[] args) 
+       {
+       
+           Scanner sc=new Scanner(System.in);
+           int n=sc.nextInt();
+           int m1=sc.nextInt();
+            for(int i=0;i<n;i++)
+           {
+               makeset(i);
+           }
+   
+           
+           for(int i=0;i<m1;i++)
+           {
+               int a=sc.nextInt();
+               int b=sc.nextInt();
+               union(a,b);
+           }
+              
+           long product=fun(n,2);
+        
+           for(int i=0;i<n;i++)
+           {
+              Node node= m.get(i);
+          
+              if(node.parent==node)
+              {
+                  
+                 product=product-fun(node.weight,2);
+              }
+           }
+           System.out.println(product);
+           
+   }
+}
