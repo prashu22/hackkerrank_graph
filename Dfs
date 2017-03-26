@@ -1,0 +1,87 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static HashMap<Integer, ArrayList<Integer>> adjList;
+    
+    public static void bfs(int start, int[] distances) {
+        Queue<Distance> queue = new ArrayDeque<Distance>();
+        queue.add(new Distance(start, 0));
+        
+        HashSet<Integer> visited = new HashSet<Integer>();
+        
+        while (queue.size() > 0) {
+            Distance curr = queue.poll();
+            int currNode = curr.node;
+            int currDistance = curr.distance;
+            
+            if (visited.contains(currNode)) {
+                continue;
+            }
+            visited.add(currNode);
+            
+            distances[currNode] = currDistance*6;
+            
+            ArrayList<Integer> reachNodes = adjList.get(currNode);
+            for (int i = 0; i < reachNodes.size(); i++) {
+                queue.add(new Distance(reachNodes.get(i), currDistance+1));
+            }
+        }
+        
+        return;
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int numTests = sc.nextInt();
+        for (int i = 0; i < numTests; i++) {
+            int numNodes = sc.nextInt();
+            int numEdges = sc.nextInt();
+            
+            adjList = new HashMap<Integer, ArrayList<Integer>>();
+            for (int j = 1; j <= numNodes; j++) {
+                adjList.put(j, new ArrayList<Integer>());
+            }
+            
+            for (int j = 0; j < numEdges; j++) {
+                int n1 = sc.nextInt();
+                int n2 = sc.nextInt();
+                
+                adjList.get(n1).add(n2);
+                adjList.get(n2).add(n1);
+            }
+            
+            int start = sc.nextInt();
+            int[] distances = new int[numNodes+1];
+            for (int j = 1; j <= numNodes; j++) {
+                distances[j] = -1;
+            }
+            bfs(start, distances);
+            
+            for (int j = 1; j <= numNodes; j++) {
+                if (j == start) {
+                    continue;
+                }
+                if (j == numNodes) {
+                    System.out.println(distances[j]);
+                    break;
+                }
+                System.out.print(distances[j] + " ");
+            }
+        }
+    }
+}
+
+class Distance {
+    int node;
+    int distance;
+    
+    public Distance(int n, int d) {
+        node = n;
+        distance = d;
+    }
+}
