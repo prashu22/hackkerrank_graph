@@ -1,0 +1,81 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Queen {
+
+    public static void main(String[] args) {
+        
+        Scanner sc=new Scanner(System.in);
+        
+        int t=sc.nextInt();
+       
+      
+        for(int i=0;i<t;i++)
+        {
+             int[][] A=new int[100][6];
+        int[] B=new int[156];
+            int la=sc.nextInt();
+            for(int j=0;j<la;j++)
+            {
+                int a=sc.nextInt();
+                int b=sc.nextInt();
+                B[a]=b;
+                
+            }
+            int sn=sc.nextInt();
+            for(int j=0;j<sn;j++)
+            {
+                int a=sc.nextInt();
+                int b=sc.nextInt();
+                B[a]=b;
+            }
+           
+              for(int k=1;k<=99;k++)
+        {
+            for(int j=0;j<6;j++)
+             {
+                 
+                 if(B[k+(j+1)]==0)
+                     A[k][j]=k+j+1;
+                 else
+                     A[k][j]=B[k+j+1];
+                 
+             }
+            }
+              int[] C=new int[200];
+              LinkedList<Integer> l=new LinkedList<Integer>();
+              l.push(1);
+              C[1]=0;
+              int w=0;
+              while(true)
+              {if(l.peek()==null)
+              {
+                  System.out.println("-1");
+                   w=1;
+                  break;
+                 
+              }
+              else
+              {int v=l.poll();
+             
+              int c=0;
+              for(int q=0;q<6;q++)
+              {    
+                  if(C[A[v][q]]==0)
+                  {l.add(A[v][q]);
+                  C[A[v][q]]=1+C[v];
+                  if(l.getLast()==100)
+                      c++;
+                }
+              } if(c>0)
+                   break;
+              }
+              }   
+              if(w!=1)
+             System.out.println(C[100]);
+        }
+    }
+}
